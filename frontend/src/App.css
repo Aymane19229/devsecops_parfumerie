@@ -1,0 +1,206 @@
+/* Reset et polices */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600&display=swap');
+
+.home-container {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f6f2 0%, #e8e6e1 100%);
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* En-tête */
+.header {
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  color: #2c2c2c;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+/* Conteneur des cartes */
+.cards-vertical {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cartes par ligne */
+  gap: 2rem;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+/* Cartes */
+.card-vertical {
+  width: 100%;
+  height: 350px;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  color: white;
+  transition: all 0.4s ease;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.card-vertical:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Contenu des cartes */
+.card-content {
+  text-align: center;
+  z-index: 2;
+  transition: all 0.3s ease;
+  padding: 2rem;
+  max-width: 80%;
+}
+
+.card-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-description {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
+}
+
+.card-cta {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 30px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.card-vertical:hover .card-cta {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateX(5px);
+}
+
+/* Styles de secours pour les cartes */
+.homme-card {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+}
+
+.femme-card {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+}
+
+.packs-card {
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+
+/* Pied de page */
+.footer {
+  margin-top: 4rem;
+  padding: 1.5rem;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .cards-vertical {
+    grid-template-columns: repeat(2, 1fr); /* 2 cartes par ligne */
+  }
+
+  .card-content h2 {
+    font-size: 2rem;
+  }
+
+  .card-description {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.8rem;
+  }
+
+  .cards-vertical {
+    grid-template-columns: 1fr; /* 1 carte par ligne */
+  }
+
+  .card-vertical {
+    height: 300px;
+  }
+
+  .card-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-container {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 2.2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .card-vertical {
+    height: 250px;
+  }
+
+  .card-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .card-description {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-cta {
+    padding: 0.6rem 1.4rem;
+    font-size: 0.9rem;
+  }
+}

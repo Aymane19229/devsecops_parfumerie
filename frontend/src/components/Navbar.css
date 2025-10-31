@@ -1,0 +1,278 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 4rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 248, 248, 0.98) 100%);
+  color: #2c2c2c;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: 'Montserrat', sans-serif;
+  min-height: 85px;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Logo Luxueux */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.navbar-logo a {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #2c2c2c;
+  text-decoration: none;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.navbar-logo a:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Navigation Principale */
+.navbar-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 3.5rem;
+  flex: 1;
+  justify-content: center;
+  margin: 0 2rem;
+}
+
+.navbar-links li {
+  position: relative;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #2c2c2c;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.navbar-links a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(135deg, #d4af37, #f8e597, #d4af37);
+  transition: width 0.4s ease;
+  border-radius: 2px;
+}
+
+.navbar-links a:hover {
+  color: #d4af37;
+  transform: translateY(-2px);
+}
+
+.navbar-links a:hover::before {
+  width: 100%;
+}
+
+/* Indicateur de lien actif */
+.navbar-links a.active {
+  color: #d4af37;
+  font-weight: 600;
+}
+
+.navbar-links a.active::before {
+  width: 100%;
+}
+
+/* Section Panier */
+.navbar-cart {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Bouton Panier Luxueux Agrandi */
+.cart-btn {
+  background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.cart-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s ease;
+}
+
+.cart-btn:hover {
+  background: linear-gradient(135deg, #000, #2c2c2c);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.cart-btn:hover::before {
+  left: 100%;
+}
+
+.cart-btn:active {
+  transform: translateY(0) scale(1);
+}
+
+/* Badge pour le nombre d'articles */
+.cart-btn::after {
+  content: attr(data-count);
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .navbar {
+    padding: 1.2rem 2.5rem;
+  }
+  
+  .navbar-links {
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar-links {
+    gap: 1.8rem;
+  }
+  
+  .navbar-links a {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+    flex-wrap: wrap;
+    min-height: 70px;
+  }
+  
+  .navbar-logo a {
+    font-size: 2rem;
+  }
+  
+  .navbar-links {
+    display: none;
+  }
+  
+  .navbar-links.mobile-open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 248, 248, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    gap: 1.5rem;
+    z-index: 999;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #2c2c2c;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo a {
+    font-size: 1.8rem;
+  }
+  
+  .cart-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .cart-btn::after {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Animation d'apparition */
+@keyframes navItemFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-links a {
+  animation: navItemFade 0.5s ease forwards;
+}
+
+.navbar-links li:nth-child(1) a { animation-delay: 0.1s; }
+.navbar-links li:nth-child(2) a { animation-delay: 0.2s; }
+.navbar-links li:nth-child(3) a { animation-delay: 0.3s; }
