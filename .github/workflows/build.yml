@@ -1,65 +1,49 @@
-name: CI/CD Java Spring Boot
+name: Java CI with Maven and SonarQube
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build-test-sonar-deploy:
+  build:
+    name: Build, Test, and SonarQube Analysis
     runs-on: ubuntu-latest
 
+    env:
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup JDK 17
-      - name: Set up JDK 17
+      - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
 
-      # 3️⃣ Cache Maven dependencies
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('backend/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4️⃣ Build and run tests
-      - name: Build and test with Maven
-        working-directory: backend
-        run: mvn -B clean verify
+      - name: Build and run tests
+        run: mvn -B verify
 
-      # 5️⃣ Run SonarQube analysis
-      - name: SonarQube Scan
-        working-directory: backend
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: |
-          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.projectKey=devsecops_parfumerie \
-            -Dsonar.projectName='devsecops_parfumerie' \
-            -Dsonar.host.url=$SONAR_HOST_URL \
-            -Dsonar.login=$SONAR_TOKEN
+      - name: Run SonarQube Analysis
+        run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+             -Dsonar.projectKey=devsecops_parfumerie \
+             -Dsonar.projectName=devsecops_parfumerie \
+             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-      # 6️⃣ Check SonarQube Quality Gate
-      - name: SonarQube Quality Gate Check
-        uses: sonarsource/sonarcloud-github-action@v2
-        with:
-          projectKey: devsecops_parfumerie
-          organization: your-org-name # remplace par ton org SonarCloud
-          token: ${{ secrets.SONAR_TOKEN }}
-
-      # 7️⃣ Deploy only if build, tests, and Sonar passed
-      - name: Deploy application
-        if: success()
-        run: |
-          echo "All checks passed ✅. Deploy your app here."
-          # Ajoute ici ton script de déploiement, par exemple SSH sur serveur ou Docker push
