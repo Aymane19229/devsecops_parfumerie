@@ -1,0 +1,9 @@
+name: Test Actions
+on:
+  workflow_dispatch:  # permet de lancer manuellement depuis GitHub
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "GitHub Actions fonctionne !"
