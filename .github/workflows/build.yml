@@ -1,50 +1,65 @@
-name: Build and SonarQube Analysis
+name: CI/CD Java Spring Boot
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build:
-    name: Build and analyze
+  build-test-sonar-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      # 1️⃣ Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
+      # 2️⃣ Setup JDK 17
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
-          java-version: 17
-          distribution: 'zulu'
+          java-version: '17'
+          distribution: 'temurin'
 
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
+      # 3️⃣ Cache Maven dependencies
       - name: Cache Maven packages
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('backend/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('backend/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-      - name: Build and analyze
-        working-directory: backend        # <== Important : exécuter Maven dans le dossier backend
+      # 4️⃣ Build and run tests
+      - name: Build and test with Maven
+        working-directory: backend
+        run: mvn -B clean verify
+
+      # 5️⃣ Run SonarQube analysis
+      - name: SonarQube Scan
+        working-directory: backend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-              -Dsonar.projectKey=devsecops_parfumerie \
-              -Dsonar.projectName='devsecops_parfumerie' \
-              -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=devsecops_parfumerie \
+            -Dsonar.projectName='devsecops_parfumerie' \
+            -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar.login=$SONAR_TOKEN
+
+      # 6️⃣ Check SonarQube Quality Gate
+      - name: SonarQube Quality Gate Check
+        uses: sonarsource/sonarcloud-github-action@v2
+        with:
+          projectKey: devsecops_parfumerie
+          organization: your-org-name # remplace par ton org SonarCloud
+          token: ${{ secrets.SONAR_TOKEN }}
+
+      # 7️⃣ Deploy only if build, tests, and Sonar passed
+      - name: Deploy application
+        if: success()
+        run: |
+          echo "All checks passed ✅. Deploy your app here."
+          # Ajoute ici ton script de déploiement, par exemple SSH sur serveur ou Docker push
