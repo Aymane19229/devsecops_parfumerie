@@ -35,36 +35,11 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       
-      - name: Debug - Check secrets
-        run: |
-          echo "SONAR_HOST_URL length: ${#SONAR_HOST_URL}"
-          echo "SONAR_TOKEN length: ${#SONAR_TOKEN}"
-          if [ -z "$SONAR_HOST_URL" ]; then
-            echo "ERROR: SONAR_HOST_URL is not set!"
-            exit 1
-          fi
-          if [ -z "$SONAR_TOKEN" ]; then
-            echo "ERROR: SONAR_TOKEN is not set!"
-            exit 1
-          fi
-          echo "Secrets are configured correctly"
-        env:
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      
-      - name: Build without tests
-        working-directory: ./backend
-        run: mvn -B clean compile -DskipTests
-      
-      - name: Run SonarQube analysis
+      - name: Build and analyze
         working-directory: ./backend
         run: |
-          echo "Using SonarQube URL: ${SONAR_HOST_URL}"
-          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:5.3.0.6276:sonar \
-            -Dsonar.projectKey=devsecops_parfumerie \
-            -Dsonar.projectName='devsecops_parfumerie' \
-            -Dsonar.host.url="${SONAR_HOST_URL}" \
-            -Dsonar.token="${SONAR_TOKEN}"
-        env:
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          mvn -B clean verify sonar:sonar \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+            -DskipTests
