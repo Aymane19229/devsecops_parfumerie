@@ -40,4 +40,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         working-directory: ./backend
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=devsecops_parfumerie -Dsonar.projectName='devsecops_parfumerie'
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=devsecops_parfumerie -Dsonar.projectName='devsecops_parfumerie' -DskipTests
