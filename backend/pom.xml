@@ -18,10 +18,9 @@
     <description>e-commerce site web for parfums</description>
 
     <properties>
-       <java.version>17</java.version>
-       <!-- SonarQube Properties -->
-       <sonar.projectKey>devsecops_parfumerie</sonar.projectKey>
-       <sonar.projectName>devsecops_parfumerie</sonar.projectName>
+        <java.version>17</java.version>
+        <sonar.organization>aymane19229</sonar.organization>
+        <sonar.projectKey>Aymane19229_devsecops_parfumerie</sonar.projectKey>
     </properties>
 
     <!-- Le reste de votre pom.xml reste identique -->
